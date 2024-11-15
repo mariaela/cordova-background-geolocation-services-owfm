@@ -500,6 +500,7 @@ public class BackgroundLocationUpdateService
         if (mActivityRecognitionClient == null) {
         mActivityRecognitionClient = new ActivityRecognitionClient.Builder(mContext)
                 .build(); // Build the client
+        }
     }
 
     @SuppressLint("MissingPermission")
