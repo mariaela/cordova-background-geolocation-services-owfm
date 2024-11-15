@@ -41,6 +41,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.location.ActivityRecognitionClient;
+import com.google.android.gms.location.ActivityRecognition;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationRequest;
@@ -455,26 +456,32 @@ public class BackgroundLocationUpdateService
     }
 
     private void attachDARecorder() {
-      if (mActivityRecognitionClient == null) {
-          buildDAClient();
-      }
+        if (mActivityRecognitionClient == null) {
+            buildDAClient();  // Ensure client is initialized
+        }
+    
+        // Request activity updates
         mActivityRecognitionClient.requestActivityUpdates(
-                    this.activitiesInterval,
-                    detectedActivitiesPI
-            );
-      if(isDebugging) {
-          Log.d(TAG, "- DA RECORDER attached - start recording location updates");
-      }
+                this.activitiesInterval,      // The interval for activity updates (in milliseconds)
+                detectedActivitiesPI          // The PendingIntent to send activity updates
+        );
+    
+        if (isDebugging) {
+            Log.d(TAG, "- DA RECORDER attached - start recording activity updates");
+        }
     }
-
+    
     private void detatchDARecorder() {
-      if (mActivityRecognitionClient == null) {
-          buildDAClient();
-      }
-      mActivityRecognitionClient.removeActivityUpdates(detectedActivitiesPI);
-      if(isDebugging) {
-          Log.d(TAG, "- Recorder detached - stop recording activity updates");
-      }
+        if (mActivityRecognitionClient == null) {
+            buildDAClient();  // Ensure client is initialized
+        }
+    
+        // Remove activity updates
+        mActivityRecognitionClient.removeActivityUpdates(detectedActivitiesPI);
+    
+        if (isDebugging) {
+            Log.d(TAG, "- Recorder detached - stop recording activity updates");
+        }
     }
 
 
@@ -489,9 +496,10 @@ public class BackgroundLocationUpdateService
 
     protected synchronized void buildDAClient() {
       Log.i(TAG, "BUILDING DA CLIENT");
-        mActivityRecognitionClient =
-                new ActivityRecognitionClient(mContext);
-
+        // Initialize the ActivityRecognitionClient using the Builder pattern
+        if (mActivityRecognitionClient == null) {
+        mActivityRecognitionClient = new ActivityRecognitionClient.Builder(mContext)
+                .build(); // Build the client
     }
 
     @SuppressLint("MissingPermission")
