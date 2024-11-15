@@ -495,11 +495,11 @@ public class BackgroundLocationUpdateService
     }
 
     protected synchronized void buildDAClient() {
-      Log.i(TAG, "BUILDING DA CLIENT");
-        // Initialize the ActivityRecognitionClient using the Builder pattern
+        Log.i(TAG, "BUILDING DA CLIENT");
+    
+        // Initialize the ActivityRecognitionClient using the correct method
         if (mActivityRecognitionClient == null) {
-        mActivityRecognitionClient = new ActivityRecognitionClient.Builder(mContext)
-                .build(); // Build the client
+            mActivityRecognitionClient = ActivityRecognition.getClient(mContext); // Correct initialization
         }
     }
 
